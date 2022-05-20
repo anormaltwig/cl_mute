@@ -19,3 +19,7 @@ git clone https://github.com/ANormalTwig/cl_mute "steaminstall/steamapps/common/
 ```text
 steaminstall/steamapps/common/GarrysMod/garrysmod/addons
 ```
+
+### Method 3
+
+Install via the [workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2574471320).
