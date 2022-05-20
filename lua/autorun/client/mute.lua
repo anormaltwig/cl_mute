@@ -121,6 +121,6 @@ list.Set( "DesktopWindows", "Clientside Mute", {
 } )
 
 
-hook.Add("Initialize", "annouce_mute_menu", function()
+hook.Add("Initialize", "announce_mute_menu", function()
 	chat.AddText(Color(0, 255, 0), "This server has a mute menu! Type ", Color(255, 255, 255), "clmute_menu", Color(0, 255, 0), " in console to open it.")
 end)
