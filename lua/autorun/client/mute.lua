@@ -2,13 +2,13 @@ local menu = {
 	muted = {}
 }
 
-hook.Add("OnPlayerChat", "CL_ChatMute", function(ply)
+hook.Add("OnPlayerChat", "ClientsideChatMute", function(ply)
 	if menu.muted[ply:SteamID()] then
 		return false
 	end
 end)
 
-surface.CreateFont("cl_mutemenu_font", {
+surface.CreateFont("clmutemenu", {
 	font = "Verdana",
 	size = 20,
 	weight = 500,
@@ -45,7 +45,7 @@ function menu.create()
 		name:SetWidth(200)
 		name:SetText(" " .. ply:Name())
 		name:SetTextColor(team.GetColor(ply:Team()))
-		name:SetFont("cl_mutemenu_font")
+		name:SetFont("clmutemenu")
 		name:Dock(LEFT)
 
 		if ply ~= LocalPlayer() then
