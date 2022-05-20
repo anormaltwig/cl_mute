@@ -111,6 +111,16 @@ concommand.Add("clmute_menu", function()
 	menu.create()
 end, nil, "Opens a menu to mute specific players in text or voice chat.")
 
+list.Set( "DesktopWindows", "Clientside Mute", {
+	title	= "Clientside Mute",
+	icon = "mutemenu/mute.png",
+	init = function( icon, window )
+		window:Remove()
+		RunConsoleCommand("clmute_menu")
+	end
+} )
+
+
 hook.Add("Initialize", "annouce_mute_menu", function()
 	chat.AddText(Color(0, 255, 0), "This server has a mute menu! Type ", Color(255, 255, 255), "clmute_menu", Color(0, 255, 0), " in console to open it.")
 end)
