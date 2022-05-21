@@ -3,8 +3,8 @@ local menu = {
 }
 
 hook.Add("OnPlayerChat", "ClientsideChatMute", function(ply)
-	if menu.muted[ply:SteamID()] then
-		return false
+	if ply and ply.SteamID and menu.muted[ply:SteamID()] then
+		return true
 	end
 end)
 
