@@ -16,7 +16,13 @@ surface.CreateFont("clmutemenu", {
 	additive = false,
 })
 local backgroundColor = Color(0, 0, 0, 100)
-local entryColor = Color(150, 150, 150, 255)
+
+local black = Color(0, 0, 0, 255)
+local white = Color(255, 255, 255, 255)
+
+local function getLuminance(col) --https://en.wikipedia.org/wiki/Relative_luminance
+	return (0.2126 * col.r + 0.7152 * col.g + 0.0722 * col.b)
+end
 
 function menu.create()
 	local frame = vgui.Create("DFrame")
@@ -34,17 +40,25 @@ function menu.create()
 
 	for k, ply in pairs(player.GetHumans()) do
 		local plyPanel = vgui.Create("DPanel", scroll)
+		plyPanel:SetHeight(24)
 		plyPanel:DockMargin(0, 0, 0, 4)
+		plyPanel:DockPadding(2, 0, 2, 0)
 		plyPanel:Dock(TOP)
-		
+
+		plyPanel.teamColor = team.GetColor(ply:Team())
 		function plyPanel:Paint(w, h)
-			draw.RoundedBox(4, 0, 0, w, h, entryColor)
+			draw.RoundedBox(4, 0, 0, w, h, plyPanel.teamColor)
 		end
+
+		local avatar = vgui.Create("AvatarImage", plyPanel)
+		avatar:SetPlayer(ply, 32)
+		avatar:SetWidth(24)
+		avatar:Dock(LEFT)
 
 		local name = vgui.Create("DLabel", plyPanel)
 		name:SetWidth(200)
 		name:SetText(" " .. ply:Name())
-		name:SetTextColor(team.GetColor(ply:Team()))
+		name:SetTextColor(getLuminance(plyPanel.teamColor) > 127 and black or white)
 		name:SetFont("clmutemenu")
 		name:Dock(LEFT)
 
@@ -52,7 +66,7 @@ function menu.create()
 			if not ply:IsAdmin() then
 				local textMute = vgui.Create("DButton", plyPanel)
 				textMute:SetText("")
-				textMute:SetSize(24, 24)
+				textMute:SetWidth(24)
 				textMute:Dock(RIGHT)
 
 				textMute:SetIcon(menu.muted[ply:SteamID()] and "icon16/cross.png" or "icon16/comments.png")
@@ -74,11 +88,10 @@ function menu.create()
 
 			local vcMute = vgui.Create("DButton", plyPanel)
 			vcMute:SetText("")
-			vcMute:SetSize(24, 24)
+			vcMute:SetWidth(24)
 			vcMute:Dock(RIGHT)
 
 			vcMute:SetIcon(ply:IsMuted() and "icon16/sound_mute.png" or "icon16/sound.png")
-
 			function vcMute.DoClick()
 				if not IsValid(ply) then
 					plyPanel:Remove()
@@ -117,5 +130,5 @@ list.Set("DesktopWindows", "Clientside Mute", {
 })
 
 hook.Add("Initialize", "announce_mute_menu", function()
-	chat.AddText(Color(0, 255, 0), "This server has a mute menu! Type ", Color(255, 255, 255), "clmute_menu", Color(0, 255, 0), " in console to open it.")
+	chat.AddText(Color(0, 255, 0), "This server has a mute menu! Open up the context menu and click on " Color(0, 0, 255), "Clientside Mute", Color(0, 255, 0)," to check it out!")
 end)
