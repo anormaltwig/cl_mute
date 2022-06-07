@@ -3,7 +3,7 @@ local menu = {
 }
 
 hook.Add("OnPlayerChat", "ClientsideChatMute", function(ply)
-	if ply and ply.SteamID and menu.muted[ply:SteamID()] then
+	if IsValid(ply) and ply.SteamID and menu.muted[ply:SteamID()] then
 		return true
 	end
 end)
@@ -86,11 +86,7 @@ function menu.create()
 				end
 				
 				ply:SetMuted(not ply:IsMuted())
-				if ply:IsMuted() then
-					vcMute:SetIcon("icon16/sound_mute.png")
-				else
-					vcMute:SetIcon("icon16/sound.png")
-				end
+				vcMute:SetIcon(ply:IsMuted() and "icon16/sound_mute.png" or "icon16/sound.png")
 			end
 
 			local vcSlider = vgui.Create("DNumSlider", plyPanel)
